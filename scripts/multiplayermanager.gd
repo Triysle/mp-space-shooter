@@ -222,6 +222,9 @@ func spawn_player_character(peer_id, player_data):
 	if player_data.has("color"):
 		apply_player_color(player_instance, player_data.color)
 	
+	# First add to scene tree
+	level.get_node("Players").add_child(player_instance, true)
+	
 	# Find spawn point
 	var spawn_pos = Vector3(0, 0, 0)  # Default position
 	var spawn_points = level.get_node_or_null("SpawnPoints")
@@ -230,11 +233,9 @@ func spawn_player_character(peer_id, player_data):
 		var spawn_point = spawn_points.get_child(spawn_index)
 		spawn_pos = spawn_point.global_position
 	
-	# Set position
+	# Now set position after adding to scene
 	player_instance.global_position = spawn_pos
 	
-	# Add to Players container
-	level.get_node("Players").add_child(player_instance)
 	print("Player " + str(peer_id) + " added to scene")
 	
 	# Setup player

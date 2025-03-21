@@ -92,7 +92,7 @@ func _ready():
 	emit_signal("energy_changed", current_energy, max_energy)
 	emit_signal("health_changed", current_health, max_health)
 	
-	# Set network authority
+	# Set network authority flag for backward compatibility
 	is_network_master = is_multiplayer_authority()
 	
 	# Make sure we're in the player group
@@ -128,18 +128,18 @@ func _physics_process(delta):
 		return
 	
 	# Only process inputs if we're the controller of this ship
-	if is_network_master:
+	if is_multiplayer_authority():
 		process_inputs(delta)
 		debug_inputs_received = true
 	
-	# Handle energy regeneration and consumption
-	handle_energy(delta)
-	
-	# Handle weapon systems
-	handle_weapons(delta)
-	
-	# Calculate and apply ship movement physics
-	handle_ship_physics(delta)
+		# Handle energy regeneration and consumption
+		handle_energy(delta)
+		
+		# Handle weapon systems
+		handle_weapons(delta)
+		
+		# Calculate and apply ship movement physics
+		handle_ship_physics(delta)
 	
 	# Apply rotation based on aim
 	if aim_indicator:
@@ -161,7 +161,7 @@ func _physics_process(delta):
 	
 	# Debug regular heartbeat
 	if Engine.get_process_frames() % 60 == 0:  # Once per second at 60 FPS
-		if is_network_master:
+		if is_multiplayer_authority():
 			print("Ship heartbeat - Position: ", global_position, " Inputs received: ", debug_inputs_received)
 
 func process_inputs(_delta):
