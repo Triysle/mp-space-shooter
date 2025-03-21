@@ -1,0 +1,48 @@
+[gd_scene load_steps=10 format=3 uid="uid://b6u47vasvpetq"]
+
+[ext_resource type="Texture2D" uid="uid://cqmc50pgu0pco" path="res://assets/8k_stars.jpg" id="1_roy73"]
+[ext_resource type="PackedScene" uid="uid://bi5kvsvfj00yp" path="res://scenes/ship.tscn" id="2_l0vm0"]
+[ext_resource type="PackedScene" uid="uid://caxbplf764pxw" path="res://scenes/hud.tscn" id="3_0j6qk"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_uc3kp"]
+panorama = ExtResource("1_roy73")
+
+[sub_resource type="Sky" id="Sky_nhhad"]
+sky_material = SubResource("PanoramaSkyMaterial_uc3kp")
+
+[sub_resource type="Environment" id="Environment_i4lna"]
+background_mode = 2
+sky = SubResource("Sky_nhhad")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aquag"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 0.1
+
+[sub_resource type="BoxMesh" id="BoxMesh_spoec"]
+material = SubResource("StandardMaterial3D_aquag")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_3xy25"]
+
+[node name="Level" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_i4lna")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="WorldEnvironment"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="WorldEnvironment/StaticBody3D"]
+mesh = SubResource("BoxMesh_spoec")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldEnvironment/StaticBody3D"]
+shape = SubResource("BoxShape3D_3xy25")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(0.773873, -0.494105, 0.396207, 0, 0.625583, 0.780158, -0.63334, -0.603743, 0.484122, 0, 0, 0)
+
+[node name="Ship" parent="." instance=ExtResource("2_l0vm0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 7.56728)
+
+[node name="HUD" parent="." instance=ExtResource("3_0j6qk")]
